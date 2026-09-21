@@ -221,12 +221,12 @@ export default function CosmicCanvas({
         }
 
         // 2. Check if the center sunflower sun was tapped!
-        const centerDist = Math.hypot(pointerNDC.x, pointerNDC.y);
-        if (centerDist < 0.38 && sunRef.current) {
+        const hitSun = (sunRef.current && sunRef.current.checkIntersection(raycasterRef.current)) || (Math.hypot(pointerNDC.x, pointerNDC.y) < 0.55);
+        if (hitSun && sunRef.current) {
           sunRef.current.triggerPulse();
           soundManager.playChime(783.99, 0.25, 3.0);
 
-          // Trigger flower center dedication display (no confetti)
+          // Trigger flower center dedication display
           if (onFlowerClick) onFlowerClick();
         }
       }

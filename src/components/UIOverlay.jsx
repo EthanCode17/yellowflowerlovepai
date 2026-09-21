@@ -109,35 +109,18 @@ export default function UIOverlay({
                 <span className="hint-dot"></span>
                 <span>Mantén presionado y arrastra para orbitar en 3D</span>
               </div>
-              <div className="hint-item">
-                <span className="hint-dot"></span>
-                <span>Toca los girasoles orbitales o el sol central</span>
+              <div
+                className="hint-item"
+                onClick={() => setShowSunDedication(true)}
+                style={{ cursor: 'pointer', color: '#ffd700', fontWeight: 500 }}
+              >
+                <span className="hint-dot" style={{ background: '#ffd700', boxShadow: '0 0 10px #ffd700' }}></span>
+                <span>🌻 Toca el Sol-Girasol para abrir tu carta</span>
               </div>
             </>
           )}
         </div>
       </footer>
-
-      {/* Main Love Dedication Modal */}
-      {showModal && (
-        <div className="modal-backdrop interactive" onClick={() => setShowModal(false)}>
-          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <span className="modal-flower-icon">🌻</span>
-            <h2 className="modal-title">Para Paola, Mi Amor Eterno</h2>
-            <p className="modal-text">
-              En este día no quería darte solo una flor... 
-              <br /><br />
-              Quería regalarte un universo entero donde cada estrella en la Vía Láctea es un girasol 
-              brillando para ti, y en el centro, el sol más radiante que lleva grabado que eres el amor de mi vida.
-              <br /><br />
-              <strong>Gracias por iluminar mi mundo hoy y siempre. Te amo infinito.</strong>
-            </p>
-            <button className="modal-close-btn" onClick={() => setShowModal(false)}>
-              Guardar en mi corazón ✨
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Planetary Solar System Modal */}
       {selectedPlanet && (
@@ -160,22 +143,36 @@ export default function UIOverlay({
         </div>
       )}
 
-      {/* Sun Center Heart Dedication Modal */}
-      {showSunDedication && (
-        <div className="modal-backdrop interactive" onClick={() => setShowSunDedication(false)}>
+      {/* Main Love Dedication Modal (Opens by tapping the Sun or the bottom pill) */}
+      {(showSunDedication || showModal) && (
+        <div
+          className="modal-backdrop interactive"
+          onClick={() => {
+            setShowSunDedication(false);
+            setShowModal(false);
+          }}
+        >
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <span className="modal-flower-icon">🌻</span>
             <p style={{ color: '#ffd000', fontFamily: 'var(--font-serif)', fontSize: '1.1rem', letterSpacing: '2px', textTransform: 'uppercase' }}>
-              Para Paola
+              Para Paola, Mi Amor Eterno
             </p>
-            <h2 className="modal-title" style={{ fontSize: '1.6rem', margin: '14px 0', lineHeight: '1.4', color: '#fff9d6' }}>
+            <h2 className="modal-title" style={{ fontSize: '1.45rem', margin: '14px 0', lineHeight: '1.4', color: '#fff9d6' }}>
               "Mi amor por ti es más grande que el universo, te dedico este giraSOL"
             </h2>
-            <p className="modal-text" style={{ fontSize: '1.05rem', color: '#ffeaa7' }}>
-              Eres el sol que le da calor y sentido a todo mi mundo. Hoy y siempre, mi corazón late solo por ti.
+            <p className="modal-text" style={{ fontSize: '1rem', lineHeight: '1.7', color: '#ffeaa7' }}>
+              En este día no quería darte solo una flor... quería regalarte un universo entero donde cada estrella en la Vía Láctea es un girasol brillando para ti, y en el centro, el sol más radiante que lleva grabado que eres el amor de mi vida.
+              <br /><br />
+              <strong>Eres el sol que le da calor y sentido a todo mi mundo. Gracias por iluminar mi vida hoy y siempre. Te amo infinito mi Sweetepai 💛</strong>
             </p>
-            <button className="modal-close-btn" onClick={() => setShowSunDedication(false)}>
-              Te amo infinito 💛
+            <button
+              className="modal-close-btn"
+              onClick={() => {
+                setShowSunDedication(false);
+                setShowModal(false);
+              }}
+            >
+              Guardar en mi corazón ✨
             </button>
           </div>
         </div>

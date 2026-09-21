@@ -243,6 +243,21 @@ export class SunflowerSun {
     this.badgeRing = new THREE.Mesh(ringGeo, ringMat);
     this.badgeRing.position.set(0, 0, 1.91);
     this.group.add(this.badgeRing);
+
+    // Large invisible hit sphere covering the entire sunflower body and petals
+    const hitGeo = new THREE.SphereGeometry(13, 16, 16);
+    const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+    this.hitMesh = new THREE.Mesh(hitGeo, hitMat);
+    this.group.add(this.hitMesh);
+  }
+
+  /**
+   * Raycast check against the sunflower sun
+   */
+  checkIntersection(raycaster) {
+    if (!this.hitMesh) return false;
+    const hits = raycaster.intersectObject(this.hitMesh, false);
+    return hits.length > 0;
   }
 
   /**
