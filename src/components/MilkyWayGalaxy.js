@@ -13,12 +13,12 @@ export class MilkyWayGalaxy {
     this.scene.add(this.group);
 
     this.particleCount = 14000;
-    this.galaxyData = generateGalaxyData(this.particleCount, 4, 180);
+    this.galaxyData = generateGalaxyData(this.particleCount, 4, 240);
 
     // Physics parameters
     this.pointer3D = new THREE.Vector3(9999, 9999, 9999);
-    this.pointerRadius = 38; // Radius of physical repulsion field
-    this.repulsionStrength = 180; // How fast particles shoot away
+    this.pointerRadius = 46; // Radius of physical repulsion field
+    this.repulsionStrength = 210; // How fast particles shoot away
     this.springStiffness = 0.055; // How strongly they return
     this.damping = 0.88; // Friction factor
 

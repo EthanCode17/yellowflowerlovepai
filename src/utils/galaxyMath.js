@@ -11,7 +11,7 @@ export const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
  * @param {number} arms Number of spiral arms (e.g. 4)
  * @param {number} maxRadius Galaxy radius
  */
-export function generateGalaxyData(count = 12000, arms = 4, maxRadius = 160) {
+export function generateGalaxyData(count = 12000, arms = 4, maxRadius = 220) {
   // Float32Arrays for positions, origins, velocities, colors, and sizes
   const currentPositions = new Float32Array(count * 3);
   const originPositions = new Float32Array(count * 3);
@@ -26,10 +26,10 @@ export function generateGalaxyData(count = 12000, arms = 4, maxRadius = 160) {
   for (let i = 0; i < count; i++) {
     const i3 = i * 3;
 
-    // Distribute particles from center (r > 12 to leave space for the giant sun) to maxRadius
+    // Distribute particles from center (r > 26 to leave clear space for the giant sun and its golden corona) to maxRadius
     // Bias towards inner arms
     const progress = Math.pow(Math.random(), 1.6);
-    const r = 14 + progress * (maxRadius - 14);
+    const r = 26 + progress * (maxRadius - 26);
     distances[i] = r;
 
     // Determine spiral arm

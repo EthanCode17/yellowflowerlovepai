@@ -36,12 +36,12 @@ export default function CosmicCanvas({
 
   // Orbit angles
   const orbitStateRef = useRef({
-    radius: 270,
-    targetRadius: 270,
+    radius: 360,
+    targetRadius: 360,
     theta: 0,       // Azimuthal angle around Y
     targetTheta: 0,
-    phi: 1.1,       // Polar angle from Y axis
-    targetPhi: 1.1,
+    phi: 1.05,      // Polar angle from Y axis
+    targetPhi: 1.05,
     velocityTheta: 0,
     velocityPhi: 0,
     isAnimatingZoom: false
@@ -68,7 +68,7 @@ export default function CosmicCanvas({
     const camera = new THREE.PerspectiveCamera(fov, width / height, 0.1, 2000);
     cameraRef.current = camera;
 
-    const initialRadius = isMobile ? 320 : 250;
+    const initialRadius = isMobile ? 440 : 360;
     const initialPhi = 1.05;
     orbitStateRef.current.radius = initialRadius;
     orbitStateRef.current.targetRadius = initialRadius;
@@ -221,7 +221,7 @@ export default function CosmicCanvas({
         }
 
         // 2. Check if the center sunflower sun was tapped!
-        const hitSun = (sunRef.current && sunRef.current.checkIntersection(raycasterRef.current)) || (Math.hypot(pointerNDC.x, pointerNDC.y) < 0.55);
+        const hitSun = (sunRef.current && sunRef.current.checkIntersection(raycasterRef.current)) || (Math.hypot(pointerNDC.x, pointerNDC.y) < 0.35);
         if (hitSun && sunRef.current) {
           sunRef.current.triggerPulse();
           soundManager.playChime(783.99, 0.25, 3.0);
@@ -341,8 +341,8 @@ export default function CosmicCanvas({
     gsap.killTweensOf(orbit);
 
     if (viewMode === 'sun') {
-      const sunRadius = isMobile ? 112 : 88;
-      const sunPhi = 1.35;
+      const sunRadius = isMobile ? 220 : 170;
+      const sunPhi = 1.28;
 
       orbit.isAnimatingZoom = true;
       soundManager.playChime(523.25, 0.15, 3.0);
@@ -371,7 +371,7 @@ export default function CosmicCanvas({
         }
       });
     } else {
-      const overviewRadius = isMobile ? 320 : 250;
+      const overviewRadius = isMobile ? 440 : 360;
       const overviewPhi = 1.05;
 
       orbit.isAnimatingZoom = true;
