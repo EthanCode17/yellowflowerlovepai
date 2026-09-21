@@ -25,6 +25,8 @@ export default function CosmicCanvas({
   const galaxyRef = useRef(null);
   const sunRef = useRef(null);
   const orbitingSystemsRef = useRef(null);
+  const viewModeRef = useRef(viewMode);
+  viewModeRef.current = viewMode;
 
   // Dynamic Camera Orbit Exploration state
   const isInteractingRef = useRef(false);
@@ -188,6 +190,16 @@ export default function CosmicCanvas({
     const onPointerUp = (e) => {
       isInteractingRef.current = false;
 
+      // Ignore if user tapped on an interactive UI element (button, modal, etc.)
+      if (e.target && e.target.closest && e.target.closest('.interactive')) {
+        return;
+      }
+
+      // CRITICAL: Only allow tapping planets or sun when ALREADY in 'sun' view mode and not currently animating zoom!
+      if (viewModeRef.current !== 'sun' || orbitStateRef.current.isAnimatingZoom) {
+        return;
+      }
+
       // If it was a quick tap/click without dragging, test interactive objects
       if (!hasMovedSignificantlyRef.current) {
         const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
@@ -203,12 +215,6 @@ export default function CosmicCanvas({
           const hitPlanet = orbitingSystemsRef.current.checkIntersection(raycasterRef.current);
           if (hitPlanet) {
             soundManager.playChime(659.25, 0.22, 2.5);
-            confetti({
-              particleCount: 35,
-              spread: 60,
-              origin: { x: clientX / window.innerWidth, y: clientY / window.innerHeight },
-              colors: [hitPlanet.color, '#ffd700', '#ffffff']
-            });
             if (onSelectPlanet) onSelectPlanet(hitPlanet);
             return;
           }
@@ -332,10 +338,11 @@ export default function CosmicCanvas({
     const orbit = orbitStateRef.current;
 
     // When viewMode changes, smoothly interpolate radius and orientation
+    gsap.killTweensOf(orbit);
+
     if (viewMode === 'sun') {
-      // Breathing room distance: comfortable distance to appreciate the Sun and all 5 planetary systems
       const sunRadius = isMobile ? 112 : 88;
-      const sunPhi = 1.35; // Slightly above equatorial plane to see orbits in 3D
+      const sunPhi = 1.35;
 
       orbit.isAnimatingZoom = true;
       soundManager.playChime(523.25, 0.15, 3.0);
@@ -345,7 +352,7 @@ export default function CosmicCanvas({
         radius: sunRadius,
         targetPhi: sunPhi,
         phi: sunPhi,
-        duration: 2.4,
+        duration: 2.2,
         ease: 'power2.inOut',
         onUpdate: () => {
           const sinPhi = Math.sin(orbit.phi);
@@ -356,11 +363,14 @@ export default function CosmicCanvas({
         },
         onComplete: () => {
           orbit.isAnimatingZoom = false;
+          orbit.targetRadius = sunRadius;
+          orbit.radius = sunRadius;
+          orbit.targetPhi = sunPhi;
+          orbit.phi = sunPhi;
           setIsJourneyStarted(true);
         }
       });
     } else {
-      // Return to full Milky Way galactic overview
       const overviewRadius = isMobile ? 320 : 250;
       const overviewPhi = 1.05;
 
@@ -371,7 +381,7 @@ export default function CosmicCanvas({
         radius: overviewRadius,
         targetPhi: overviewPhi,
         phi: overviewPhi,
-        duration: 2.5,
+        duration: 2.2,
         ease: 'power2.inOut',
         onUpdate: () => {
           const sinPhi = Math.sin(orbit.phi);
@@ -382,6 +392,10 @@ export default function CosmicCanvas({
         },
         onComplete: () => {
           orbit.isAnimatingZoom = false;
+          orbit.targetRadius = overviewRadius;
+          orbit.radius = overviewRadius;
+          orbit.targetPhi = overviewPhi;
+          orbit.phi = overviewPhi;
         }
       });
     }

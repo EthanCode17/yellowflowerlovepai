@@ -22,9 +22,13 @@ export default function UIOverlay({
     setIsMuted(!playing);
   };
 
-  const handleStartJourney = () => {
-    setViewMode('sun');
+  const handleStartJourney = (e) => {
+    if (e) {
+      e.stopPropagation();
+      if (e.cancelable && e.preventDefault) e.preventDefault();
+    }
     setIsJourneyStarted(true);
+    setViewMode('sun');
     if (isMuted) {
       const playing = soundManager.toggle();
       setIsMuted(!playing);
@@ -80,7 +84,11 @@ export default function UIOverlay({
       {/* Center Prompt when in Galactic Overview */}
       {viewMode === 'overview' && !isJourneyStarted && (
         <div className="center-hint interactive">
-          <button className="start-journey-btn" onClick={handleStartJourney}>
+          <button
+            className="start-journey-btn"
+            onClick={handleStartJourney}
+            onTouchEnd={handleStartJourney}
+          >
             <Heart size={20} fill="#ffd000" />
             <span>Tap &lt;3</span>
           </button>
