@@ -44,45 +44,37 @@ export default function UIOverlay({
 
   return (
     <div className="ui-overlay">
-      {/* Header */}
-      <header className="header-glass interactive">
-        <h1 className="header-title">Vía Láctea de Girasoles</h1>
-        <p className="header-sub">
-          Una flor amarilla es poco, así que te regalo una galaxia de girasoles, tu flor favorita, te amo
-        </p>
-      </header>
+      {/* Top Section with Header & Controls */}
+      <div className="top-section">
+        <header className="header-glass interactive">
+          <h1 className="header-title">Vía Láctea de Girasoles</h1>
+          <p className="header-sub">
+            Una flor amarilla es poco, así que te regalo una galaxia de girasoles, tu flor favorita, te amo
+          </p>
+        </header>
 
-      {/* Top Right Controls */}
-      <div className="top-right-controls interactive">
-        {/* Toggle Audio */}
-        <button
-          className="btn-icon"
-          onClick={handleToggleSound}
-          title={isMuted ? 'Activar música espacial' : 'Silenciar'}
-          aria-label="Música"
-        >
-          {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-        </button>
+        {/* Controls (positioned below on mobile, top-right on desktop) */}
+        <div className="top-controls interactive">
+          {/* Toggle Audio */}
+          <button
+            className="btn-icon"
+            onClick={handleToggleSound}
+            title={isMuted ? 'Activar música espacial' : 'Silenciar'}
+            aria-label="Música"
+          >
+            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+          </button>
 
-        {/* Change Camera Perspective */}
-        <button
-          className="btn-icon"
-          onClick={() => setViewMode(viewMode === 'overview' ? 'sun' : 'overview')}
-          title={viewMode === 'overview' ? 'Ir al Sol Girasol' : 'Ver Vía Láctea completa'}
-          aria-label="Perspectiva"
-        >
-          {viewMode === 'overview' ? <Compass size={20} /> : <RotateCcw size={20} />}
-        </button>
-
-        {/* Open Letter / Dedication */}
-        <button
-          className="btn-icon"
-          onClick={handleOpenDedication}
-          title="Ver dedicatoria de amor"
-          aria-label="Dedicatoria"
-        >
-          <Heart size={20} fill="#ffd000" />
-        </button>
+          {/* Change Camera Perspective */}
+          <button
+            className="btn-icon"
+            onClick={() => setViewMode(viewMode === 'overview' ? 'sun' : 'overview')}
+            title={viewMode === 'overview' ? 'Ir al Sol Girasol' : 'Ver Vía Láctea completa'}
+            aria-label="Perspectiva"
+          >
+            {viewMode === 'overview' ? <Compass size={20} /> : <RotateCcw size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Center Prompt when in Galactic Overview */}
